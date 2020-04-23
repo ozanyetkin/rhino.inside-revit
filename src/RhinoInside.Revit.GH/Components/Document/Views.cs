@@ -30,9 +30,22 @@ namespace RhinoInside.Revit.GH.Components
       var discipline = manager[manager.AddParameter(new Parameters.Param_Enum<Types.ViewDiscipline>(), "Discipline", "D", "View discipline", GH_ParamAccess.item)] as Parameters.Param_Enum<Types.ViewDiscipline>;
       discipline.Optional = true;
 
-      var type = manager[manager.AddParameter(new Parameters.Param_Enum<Types.ViewType>(), "Type", "T", "View type", GH_ParamAccess.item)] as Parameters.Param_Enum<Types.ViewType>;
-      type.SetPersistentData(DB.ViewType.Undefined);
-      type.Optional = true;
+      // DB.ViewType includes internal view types and is not appropriate to be used publicly
+      //var type = manager[manager.AddParameter(new Parameters.Param_Enum<Types.ViewType>(), "Type", "T", "View type", GH_ParamAccess.item)] as Parameters.Param_Enum<Types.ViewType>;
+      //type.SetPersistentData(DB.ViewType.Undefined);
+      //type.Optional = true;
+      // use DB.ViewFamily Instead
+      var viewSystemFamily = manager[
+        manager.AddParameter(
+          param: new Parameters.Param_Enum<Types.ViewSystemFamily>(),
+          name: "View System Family",
+          nickname: "VSF",
+          description: "View system family",
+          access: GH_ParamAccess.item
+          )] as Parameters.Param_Enum<Types.ViewSystemFamily>;
+      viewSystemFamily.SetPersistentData(DB.ViewFamily.Invalid);
+      viewSystemFamily.Optional = true;
+
 
       manager[manager.AddTextParameter("Name", "N", "View name", GH_ParamAccess.item)].Optional = true;
       manager[manager.AddParameter(new Parameters.View(), "Template", "T", "Views template", GH_ParamAccess.item)].Optional = true;
@@ -53,8 +66,10 @@ namespace RhinoInside.Revit.GH.Components
       var _Discipline_ = Params.IndexOfInputParam("Discipline");
       bool nofilterDiscipline = (!DA.GetData(_Discipline_, ref viewDiscipline) && Params.Input[_Discipline_].Sources.Count == 0);
 
-      var viewType = DB.ViewType.Undefined;
-      DA.GetData("Type", ref viewType);
+      //var viewType = DB.ViewType.Undefined;
+      //DA.GetData("Type", ref viewType);
+      DB.ViewFamily viewSystemFamily = default;
+      DA.GetData("View System Family", ref viewSystemFamily);
 
       string name = null;
       DA.GetData("Name", ref name);
@@ -105,8 +120,8 @@ namespace RhinoInside.Revit.GH.Components
         if (!nofilterIsPrintable)
           views = views.Where((x) => x.CanBePrinted == IsPrintable);
 
-        if (viewType != DB.ViewType.Undefined)
-          views = views.Where((x) => x.ViewType == viewType);
+        if (viewSystemFamily != DB.ViewFamily.Invalid)
+          views = views.Where(x=> ((DB.ViewFamilyType) x.Document.GetElement(x.GetTypeId())).ViewFamily == viewSystemFamily);
 
         if (name is object)
           views = views.Where(x => x.Name.IsSymbolNameLike(name));
