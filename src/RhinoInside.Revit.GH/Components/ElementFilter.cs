@@ -634,7 +634,14 @@ namespace RhinoInside.Revit.GH.Components
       if (!DA.GetData("Inverted", ref inverted))
         return;
 
-      DA.SetData("Filter", new Autodesk.Revit.UI.Selection.SelectableInViewFilter(view.Document, view.Id, inverted));
+      var filter = new Autodesk.Revit.UI.Selection.SelectableInViewFilter(view.Document, view.Id, inverted);
+      // HACK: push Revit to generate/expand the contents of the view
+      //       otherwise passing this filter to a document element collector does not return any data
+      //       unless the target view is manually opened in Revit
+      //       using filter.PassesFilter() has been tested and does not work
+      new DB.FilteredElementCollector(view.Document, view.Id).ToElementIds();
+
+      DA.SetData("Filter", filter);
     }
   }
   #endregion
