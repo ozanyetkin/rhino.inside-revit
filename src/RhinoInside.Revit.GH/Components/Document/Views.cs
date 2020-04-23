@@ -36,9 +36,9 @@ namespace RhinoInside.Revit.GH.Components
 
       manager[manager.AddTextParameter("Name", "N", "View name", GH_ParamAccess.item)].Optional = true;
       manager[manager.AddParameter(new Parameters.View(), "Template", "T", "Views template", GH_ParamAccess.item)].Optional = true;
-      manager[manager.AddBooleanParameter("IsTemplate", "T", "View is template", GH_ParamAccess.item, false)].Optional = true;
-      manager[manager.AddBooleanParameter("IsAssembly", "A", "View is assembly", GH_ParamAccess.item, false)].Optional = true;
-      manager[manager.AddBooleanParameter("IsPrintable", "P", "View is printable", GH_ParamAccess.item, true)].Optional = true;
+      manager[manager.AddBooleanParameter("IsTemplate", "T?", "View is template", GH_ParamAccess.item, false)].Optional = true;
+      manager[manager.AddBooleanParameter("IsAssembly", "A?", "View is assembly", GH_ParamAccess.item, false)].Optional = true;
+      manager[manager.AddBooleanParameter("IsPrintable", "P?", "View is printable", GH_ParamAccess.item, true)].Optional = true;
       manager[manager.AddParameter(new Parameters.ElementFilter(), "Filter", "F", "Filter", GH_ParamAccess.item)].Optional = true;
     }
 
