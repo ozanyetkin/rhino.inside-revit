@@ -130,6 +130,7 @@ namespace RhinoInside.Revit.GH.Components
         }
 
         // filter by name or title
+        // TODO: create REGEX parameter and modify to support regex inputs
         if (hasNameOrTitleFilter)
         {
           // getting DB.BuiltInParameter.VIEW_NAME instead of view.Name for consistency
