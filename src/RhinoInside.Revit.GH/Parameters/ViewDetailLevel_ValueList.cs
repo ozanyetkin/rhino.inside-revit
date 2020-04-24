@@ -11,7 +11,7 @@ namespace RhinoInside.Revit.GH.Parameters
   public class ViewDetailLevel_ValueList : GH_ValueList
   {
     public override Guid ComponentGuid => new Guid("B078E48A-C56F-4D51-A886-04E537445019");
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override GH_Exposure Exposure => GH_Exposure.quarternary;
 
     public ViewDetailLevel_ValueList()
     {
