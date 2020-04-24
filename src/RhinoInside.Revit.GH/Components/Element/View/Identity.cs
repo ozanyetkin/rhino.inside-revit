@@ -1,6 +1,7 @@
 using System;
 using Grasshopper.Kernel;
 using DB = Autodesk.Revit.DB;
+using DBX = RhinoInside.Revit.External.DB;
 
 namespace RhinoInside.Revit.GH.Components
 {
@@ -25,10 +26,10 @@ namespace RhinoInside.Revit.GH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager manager)
     {
-      manager.AddParameter(new Parameters.Param_Enum<Types.ViewDiscipline>(), "Discipline", "Discipline", "View discipline", GH_ParamAccess.item);
+      manager.AddParameter(new Parameters.ViewDiscipline_ValueList(), "Discipline", "Discipline", "View discipline", GH_ParamAccess.item);
       // DB.ViewFamily is safer than DB.ViewType
       // see notes on RhinoInside.Revit.GH.Components.DocumentViews
-      manager.AddParameter(new Parameters.Param_Enum<Types.ViewSystemFamily>(), "View System Family", "VSF", "View System Family", GH_ParamAccess.item);
+      manager.AddParameter(new Parameters.ViewSystemFamily_ValueList(), "View System Family", "VSF", "View System Family", GH_ParamAccess.item);
 
       manager.AddTextParameter("Name", "N", "View name", GH_ParamAccess.item);
       manager.AddTextParameter("Title On Sheet", "TOS", "View title on sheet", GH_ParamAccess.item);
@@ -46,9 +47,9 @@ namespace RhinoInside.Revit.GH.Components
         return;
 
       if (view.HasViewDiscipline())
-        DA.SetData("Discipline", view.Discipline);
+        DA.SetData("Discipline", (DBX.ViewDiscipline)view.Discipline);
       else
-        DA.SetData("Discipline", null);
+        DA.SetData("Discipline", DBX.ViewDiscipline.NotSet);
 
       DB.ViewFamilyType viewType = view.Document.GetElement(view.GetTypeId()) as DB.ViewFamilyType;
       DA.SetData("View System Family", new Types.ViewSystemFamily(viewType.ViewFamily));
