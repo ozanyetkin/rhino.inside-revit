@@ -338,7 +338,6 @@
     <Compile Include="Parameters\CurtainGridAlignType_ValueList.cs" />
     <Compile Include="Parameters\CurtainGridLayout_ValueList.cs" />
     <Compile Include="Parameters\CurtianGridJoinCondition_ValueList.cs" />
-    <Compile Include="Parameters\CurtainGridLine.cs" />
     <Compile Include="Parameters\SpatialElement.cs" />
     <Compile Include="Parameters\CurtainMullionPosition_ValueList.cs" />
     <Compile Include="Parameters\CurtainMullionSystemFamily_ValueList.cs" />
@@ -363,6 +362,7 @@
     <Compile Include="Types\GraphicalElement.cs" />
     <Compile Include="Types\Group.cs" />
     <Compile Include="Types\Panel.cs" />
+    <Compile Include="Types\Mullion.cs" />
     <Compile Include="Types\Parameter.cs" />
     <Compile Include="Types\DatumPlane.cs" />
     <Compile Include="Types\SketchPlane.cs" />
